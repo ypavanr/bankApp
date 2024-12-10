@@ -37,3 +37,18 @@ const db = new pg.Client({
     // Simulate successful data storage
     res.status(200).json({ message: 'User registered successfully!' });
 });
+app.post('/login', (req, res) => {
+    // Collect the data from the request body
+    const { email, password } = req.body;
+
+    // Log the received data (for testing purposes)
+    console.log('Received login data:', { email, password});
+
+    // Perform further processing (e.g., validate inputs, store data in a database)
+    if ( !email || !password ) {
+        return res.status(400).json({ error: 'All fields are required!' });
+    }
+
+    // Simulate successful data storage
+    res.status(200).json({ message: 'User login successfully!' });
+});

@@ -26,7 +26,6 @@ function Register() {
             const response = await axios.post('http://localhost:3000/register', formData);
 
             if (response.status === 200) {
-                alert('Registration successful!');
                 console.log(response.data);
             } else {
                 alert('Registration failed: ' + response.data.message);
