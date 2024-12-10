@@ -5,11 +5,11 @@ function Homepage() {
   const navigate = useNavigate();
 
   const handleRegisterClick = () => {
-    navigate('/signup');
+    navigate('/register');
   };
 
   const handleLoginClick = () => {
-    navigate('/signin');
+    navigate('/login');
   };
 
   return (

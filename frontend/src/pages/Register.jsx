@@ -5,10 +5,12 @@ import axios from 'axios';
 function Register() {
     const [formData, setFormData] = useState({
         name: '',
+        accountNo: '',
         email: '',
         password: '',
         phone: '',
-        birthdate: ''
+        birthdate: '',
+        accountType: ''
     });
 
     const handleChange = (e) => {
@@ -51,6 +53,17 @@ function Register() {
                         required
                     />
                 </Form.Group>
+                <Form.Group controlId="accountNo">
+                    <Form.Label>Account Number:</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="accountNo"
+                        value={formData.accountNo}
+                        onChange={handleChange}
+                        placeholder="Enter your account no."
+                        required
+                    />
+                </Form.Group>
                 <Form.Group controlId="email">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
@@ -81,7 +94,7 @@ function Register() {
                         value={formData.phone}
                         onChange={handleChange}
                         pattern="789][0-9]{9}"
-                        placeholder="+1 123-456-7890"
+                        placeholder="+91 123-456-7890"
                         required
                     />
                 </Form.Group>
@@ -95,6 +108,21 @@ function Register() {
                         required
                     />
                 </Form.Group>
+                <Form.Group controlId="accountType">
+                    <Form.Label>Account Type:</Form.Label>
+                    <Form.Select
+                        name="accountType"
+                        value={formData.accountType}
+                        onChange={handleChange}
+                        required>
+                             <option value="" disabled>
+            -- Choose your Account Type --
+          </option>
+          <option value="savings">savings</option>
+          <option value="current">current</option>
+        </Form.Select>
+                </Form.Group>
+                
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>

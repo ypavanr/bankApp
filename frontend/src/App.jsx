@@ -8,8 +8,8 @@ import axios from "axios";
 function App(){
    return <Routes>
     <Route path="/" element={<Homepage/>}/>
-    <Route path="/signup" element={<Register/>}/>
-    <Route path="/signin" element={<Login/>}/>
+    <Route path="/register" element={<Register/>}/>
+    <Route path="/login" element={<Login/>}/>
    </Routes>
 }
 export default App
