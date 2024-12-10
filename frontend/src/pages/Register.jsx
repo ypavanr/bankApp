@@ -19,7 +19,6 @@ function Register() {
         }));
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -82,7 +81,7 @@ function Register() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        pattern="\+?[0-9]{1,4}?[-.()\s]?[0-9]+([-.\s]?[0-9]+)*"
+                        pattern="789][0-9]{9}"
                         placeholder="+1 123-456-7890"
                         required
                     />

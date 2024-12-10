@@ -6,7 +6,7 @@ const app=express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin:'http://localhost:5173/'
+    origin:'http://localhost:5173'
 }));
 app.listen(3000,()=>{
     console.log("server listening on port 3000")

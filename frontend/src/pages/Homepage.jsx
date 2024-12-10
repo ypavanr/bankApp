@@ -1,26 +1,30 @@
-import { useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Button } from 'react-bootstrap';
-
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 function Homepage() {
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    navigate('/signup');
+  };
+
+  const handleLoginClick = () => {
+    navigate('/signin');
+  };
+
   return (
     <div>
       <p>Welcome to my Bank Application</p>
       <div>
-      <Form action='/signup' method='POST'>
-          <Form.Group>
-            <Form.Control type='submit' value='Register' />
-          </Form.Group>
-        </Form>
-        <Form action='/signin' method='POST'>
-          <Form.Group>
-            <Form.Control type='submit' value='Log In' />
-          </Form.Group>
-        </Form>
+        <Button variant="primary" onClick={handleRegisterClick}>
+          Register
+        </Button>
+        <Button variant="primary" onClick={handleLoginClick}>
+          Log In
+        </Button>
       </div>
     </div>
-  )
+  );
 }
 
-export default Homepage
+export default Homepage;
