@@ -27,7 +27,7 @@ function Login(){
             }
         } catch (error) {
             console.error('Error during login:', error);
-            alert('An error occurred. Please try again.');
+            alert(error.response.data.message);
         }
     };
     return (
