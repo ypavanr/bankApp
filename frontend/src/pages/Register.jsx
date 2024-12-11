@@ -10,7 +10,8 @@ function Register() {
         password: '',
         phone: '',
         birthdate: '',
-        accountType: ''
+        accountType: '',
+        address:''
     });
 
     const handleChange = (e) => {
@@ -34,7 +35,7 @@ function Register() {
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            alert('An error occurred. Please try again.');
+            alert(error.response.data.message);
         }
     };
 
@@ -122,7 +123,17 @@ function Register() {
           <option value="current">current</option>
         </Form.Select>
                 </Form.Group>
-                
+                <Form.Group controlId="address">
+                    <Form.Label>address:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="Enter your address"
+                        required
+                    />
+                </Form.Group>
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>

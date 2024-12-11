@@ -24,5 +24,5 @@ const db = new pg.Client({
   db.connect().then(()=>{
     console.log("connected to database")
   })
-
+export default db
   app.use("/",authRouter)
