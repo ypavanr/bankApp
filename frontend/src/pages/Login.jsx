@@ -2,11 +2,14 @@ import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import axios from "axios";
-function Login(){
-    const[formData,setFormData]=useState({
-        email:'',
-        password:''
-    })
+
+function Login() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const [accessToken, setAccessToken] = useState(null); // Store token in memory
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -14,6 +17,7 @@ function Login(){
             [name]: value,
         }));
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -21,30 +25,52 @@ function Login(){
             const response = await axios.post('http://localhost:3000/login', formData);
 
             if (response.status === 200) {
-                console.log(response.data);
+                const { token } = response.data; // Assuming the response contains a `token`
+                setAccessToken(token); // Store token in memory
+                console.log('Login successful:', response.data);
+                alert('Login successful!');
             } else {
-                alert('login failed: ' + response.data.message);
+                alert('Login failed: ' + response.data.message);
             }
         } catch (error) {
             console.error('Error during login:', error);
-            alert(error.response.data.message);
+            alert(error.response?.data?.message || 'An error occurred');
         }
     };
+
     return (
         <div>
-           <p>LOGIN PAGE</p>
-           <Form onSubmit={handleSubmit}>
-           <Form.Group >
-              <Form.Label for='Email'>Email:</Form.Label>
-              <Form.Control type='email' name='email' id='email' value={formData.email} onChange={handleChange} placeholder="Enter your email"required/>
-              <Form.Label for='password'>password:</Form.Label>
-              <Form.Control type='password' name='password' id='password' value={formData.password} onChange={handleChange} placeholder="Enter your password" required/>
-              <Button variant="primary" type="submit">
-                submit
-              </Button>
-           </Form.Group>
-           </Form>
+            <p>LOGIN PAGE</p>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                    <Form.Label htmlFor='email'>Email:</Form.Label>
+                    <Form.Control 
+                        type='email' 
+                        name='email' 
+                        id='email' 
+                        value={formData.email} 
+                        onChange={handleChange} 
+                        placeholder="Enter your email" 
+                        required 
+                    />
+                    <Form.Label htmlFor='password'>Password:</Form.Label>
+                    <Form.Control 
+                        type='password' 
+                        name='password' 
+                        id='password' 
+                        value={formData.password} 
+                        onChange={handleChange} 
+                        placeholder="Enter your password" 
+                        required 
+                    />
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Form.Group>
+            </Form>
+            {accessToken && <p>Token stored in memory!</p>}
         </div>
-    )
+    );
 }
-export default Login
+
+export default Login;

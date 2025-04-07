@@ -33,33 +33,63 @@ const register= async(req, res) => {
         
     }
    
-};
-const login= async(req, res) => {
+};  
+const ACCESS_TOKEN_SECRET = "23rioj3rfmor3mofmqfr3f34fomvoefkv390rk"; 
+const REFRESH_TOKEN_SECRET="f;ojnf98rj3ugn3rijdqdmjefn94ujrjerverje";
+
+const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log('Received login data:', { email, password});
-    if ( !email || !password ) {
+    console.log('Received login data:', { email, password });
+    if (!email || !password) {
         return res.status(400).send({ error: 'All fields are required!' });
     }
-    const exist=await db.query("SELECT * FROM users WHERE email=$1",[email,]);
-    if(exist.rows.length>0){
-        const hashedPassword=exist.rows[0].password_hash;
-        console.log(hashedPassword)
-        bcrypt.compare(password,hashedPassword,(err,result)=>{
-            if(err){
-                console.log("error comparing password",err)
-            }
-            else{
-                if(result){
-                    res.status(200).send({ message: 'User login successfully!' });
+
+    try {
+        const user = await db.query("SELECT * FROM users WHERE email=$1", [email]);
+        if (user.rows.length > 0) {
+            const hashedPassword = user.rows[0].password_hash;
+            bcrypt.compare(password, hashedPassword, (err, result) => {
+                if (err) {
+                    console.log("Error comparing password:", err);
+                    return res.status(500).send({ error: "Internal server error" });
                 }
-                else{
-                    res.status(401).send({message: 'invalid credentials'})
+                if (result) {
+                    const Accesstoken = jwt.sign(
+                        { email: user.rows[0].email },
+                        ACCESS_TOKEN_SECRET,
+                        { expiresIn: "900s" }
+                    );
+                    const Refreshtoken = jwt.sign(
+                        { email: user.rows[0].email },
+                        REFRESH_TOKEN_SECRET,
+                        { expiresIn: "1d" }
+                    );
+
+                    res.cookie('Refreshtoken', Refreshtoken, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'strict',
+                        maxAge: 60 * 60
+                    });
+
+                    return res.status(200).send({
+                        message: 'User login successful!',
+                        Accesstoken, 
+                    });
+                } else {
+                    return res.status(401).send({ message: 'Invalid credentials' });
                 }
-            }
-        })
-    }
-    else{
-        res.status(401).send({message:'email doesnt exist. please register'})
+            });
+        } else {
+            return res.status(401).send({ message: 'Email does not exist. Please register' });
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
+        return res.status(500).send({ error: "Internal server error" });
     }
 };
+
+
+
+
 export {register,login};
